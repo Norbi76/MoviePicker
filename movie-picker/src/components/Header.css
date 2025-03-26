@@ -1,0 +1,18 @@
+.header {
+    background-color: rgb(71, 70, 70);
+    color: white;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* border-width: 2px; */
+    /* border-color: black;
+    border-style: solid; */
+    border-bottom: 5px solid black;
+    width: 100%;
+    box-sizing: border-box;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}

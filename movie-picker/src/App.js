@@ -1,20 +1,29 @@
 import React from 'react';
 import './App.css';
 import Button from './components/Button';
+import Container from './components/Container';
+import Header from './components/Header';
+// import logoImage from '../public/logo.png';
 
 function App() {
-  const handleClick = () => {
-    alert('Button clicked!');
-  };
-
   return (
     <div className="App">
-      <header className="App-header">
+      <Header>
+        <div className="logo-container">
+          <div className="logo" >
+            <img src='/logo.png' style={{ width: 60, height: 60 }} />
+          </div>
+          <div className="logo-title">
+            <h2 style={{ margin: 0 }}>Movie</h2>
+            <h2 style={{ margin: 0 }}>Picker</h2>
+          </div>
+        </div>
+      </Header >
+      {/* <Button onClick={() => alert('Hello, world!')}>Click me!</Button> */}
+      < Container >
         <h1>Welcome to Movie Picker!</h1>
-        <p>Find the perfect movie for your next movie night.</p>
-        <Button onClick={handleClick}>Find Movies</Button>
-      </header>
-    </div>
+      </Container >
+    </div >
   );
 }
 

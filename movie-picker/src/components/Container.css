@@ -1,0 +1,19 @@
+.container {
+    background-color: rgb(71, 70, 70);
+    color: white;
+    /*border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    margin: 20px;
+    border: 1px solid #555;
+    outline: 2px solid rgba(0, 123, 255, 0.5);
+    outline-offset: 5px; */
+    border-width: 2px;
+    /* border-color: #161f6d; */
+    border-color: black;
+    border-style: solid;
+    border-radius: 3px;
+    margin-top: 15%;
+    margin-right: 25%;
+    margin-left: 25%;
+}
