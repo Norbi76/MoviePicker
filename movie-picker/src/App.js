@@ -1,10 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import Button from './components/Button';
-import Container from './components/Container';
 import Header from './components/Header';
+import WelcomeComponent from './components/WelcomeComponent';
+import AboutComponent from './components/AboutComponent';
 
 function App() {
+  const [showAbout, setShowAbout] = useState(false);
+
+  const handleAboutClick = () => {
+    setShowAbout(true);
+  };
+
+  const handleHomeClick = () => {
+    setShowAbout(false);
+  };
+
   return (
     <div className="App">
       <Header>
@@ -18,15 +29,11 @@ function App() {
           </div>
         </div>
         <div className="header-buttons">
-          <Button>Home</Button>
-          <Button>About</Button>
+          <Button onClick={handleHomeClick}>Home</Button>
+          <Button onClick={handleAboutClick}>About</Button>
         </div>
       </Header >
-      <Container>
-        <h1 style={{ margin: 0 }}>Welcome to Movie Picker!</h1>
-        <p>Answer some questions about what you like and we'll find the best movie for you!</p>
-        <Button className="start-button" style={{ width: 250 }}>Start</Button>
-      </Container>
+      {showAbout ? <AboutComponent /> : <WelcomeComponent />}
     </div >
   );
 }
