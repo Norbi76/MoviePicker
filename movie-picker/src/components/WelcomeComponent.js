@@ -4,7 +4,7 @@ import Container from './Container';
 import { useState, useEffect } from "react";
 
 
-function WelcomeContent() {
+function WelcomeContent({ onStartClick }) {
     const [titleStyle, setTitleStyle] = useState({ opacity: 0 });
     const [textStyle, setTextStyle] = useState({ opacity: 0 });
     const [buttonStyle, setButtonStyle] = useState({ opacity: 0 });
@@ -30,7 +30,7 @@ function WelcomeContent() {
         <Container>
             <h1 style={{ ...titleStyle, margin: 0 }}>Welcome to Movie Picker!</h1>
             <p style={textStyle}>Answer some questions about what you like and we'll find the best movie for you!</p>
-            <Button className="start-button" style={{ ...buttonStyle, width: 250 }}>Start</Button>
+            <Button className="start-button" style={{ ...buttonStyle, width: 250 }} onClick={onStartClick}>Start</Button>
         </Container>
     );
 }
