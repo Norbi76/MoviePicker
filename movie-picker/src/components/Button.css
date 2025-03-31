@@ -14,3 +14,12 @@
 .custom-button:hover {
     background-color: rgba(253, 197, 56, 0.1);
 }
+
+#special-button {
+    background-color: rgba(255, 0, 0, 0.85);
+    border: 2px solid rgba(255, 0, 0, 0.85);
+}
+
+#special-button:hover {
+    background-color: rgba(255, 0, 0, 0.1);
+}
