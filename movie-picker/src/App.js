@@ -6,13 +6,13 @@ import WelcomeComponent from './components/WelcomeComponent';
 import AboutComponent from './components/AboutComponent';
 // import { fetchData } from './apiService';
 import QuestionsComponent from './components/QuestionsComponent';
+import RecommendationComponent from './components/RecommendationComponent';
 
 function App() {
   const [showAbout, setShowAbout] = useState(false);
   const [showQuestions, setShowQuestions] = useState(false);
   const [showWelcome, setShowWelcome] = useState(true);
-  // const [movies, setMovies] = useState([]);
-  // const [searchTerm, setSearchTerm] = useState('Batman'); // Example search term
+  const [showRecommendations, setShowRecommendations] = useState(false);
 
   const handleAboutClick = () => {
     if (showQuestions) {
@@ -55,25 +55,6 @@ function App() {
     setShowQuestions(true);
   };
 
-  // useEffect(() => {
-  //   // console.log("API Key:", process.env.REACT_APP_OMDb_API_KEY); // Check if API key is loaded
-  //   // console.log("process.env:", process.env); // Log the entire process.env object
-  //   const getMovies = async () => {
-  //     try {
-  //       const data = await fetchData(searchTerm);
-  //       if (data.Search) {
-  //         setMovies(data.Search);
-  //       } else {
-  //         setMovies([]);
-  //       }
-  //     } catch (error) {
-  //       console.error("Failed to fetch movies:", error);
-  //     }
-  //   };
-
-  //   getMovies();
-  // }, [searchTerm]); // useEffect will run when searchTerm changes
-
   return (
     <div className="App">
       <Header>
@@ -91,10 +72,16 @@ function App() {
           <Button onClick={handleAboutClick}>About</Button>
         </div>
       </Header >
+      <div className="content">
+        {showWelcome ? <WelcomeComponent onStartClick={handleStartClick} /> : null}
+        {showAbout ? <AboutComponent /> : null}
+        {showQuestions ? (
+          <QuestionsComponent onReachedEnd={() => { setShowQuestions(false); setShowRecommendations(true) }} />
+        ) : null}
+        {showRecommendations ? <RecommendationComponent /> : null}
+        {/* <RecommendationComponent /> */}
+      </div>
 
-      {showWelcome ? <WelcomeComponent onStartClick={handleStartClick} /> : null}
-      {showAbout ? <AboutComponent /> : null}
-      {showQuestions ? <QuestionsComponent /> : null}
     </div >
   );
 }

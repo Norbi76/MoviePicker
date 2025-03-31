@@ -2,6 +2,23 @@
   text-align: center;
   display: flex;
   flex-direction: column;
+  /* justify-content: center;
+  align-items: center;
+  align-content: center; */
+  /* height: 100vh;
+  width: 100vw; */
+  /* align-items: center; */
+  /* justify-content: center; */
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* align-content: center; */
+  justify-content: center;
+  height: 85vh;
+  /* width: 100vw; */
 }
 
 .logo-container {

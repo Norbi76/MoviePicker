@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Container from './Container';
 import Button from './Button';
 
+export let exportedAnswers = {};
+
 const blinkAnimation = `
   @keyframes blinker {
     50% {
@@ -292,11 +294,14 @@ function Rating({ onNext }) {
     );
 }
 
-function QuestionsComponent() {
+// export const QuestionContext = createContext();
+
+function QuestionsComponent({ onReachedEnd }) {
     const [questionIndex, setQuestionIndex] = useState(0);
     const [answers, setAnswers] = useState({});
     const [showComponent, setShowComponent] = useState(true);
-    const [delay] = useState(2000); // Set the delay here
+    const [delay] = useState(2000);
+    // const [reachedEnd, setReachedEnd] = useState(false);
     const questions = [Genre, Year, Time, Popularity, Rating];
 
     const handleNext = (newAnswer) => {
@@ -309,11 +314,19 @@ function QuestionsComponent() {
     };
 
     useEffect(() => {
+        exportedAnswers = answers;
+    }, [answers]);
+
+    useEffect(() => {
         if (questionIndex === questions.length) {
+            // setReachedEnd(true);
             console.log("All questions answered:", answers);
             alert(JSON.stringify(answers));
+            if (onReachedEnd) {
+                onReachedEnd();
+            }
         }
-    }, [questionIndex, answers, questions.length]);
+    }, [questionIndex, answers, questions.length, onReachedEnd]);
 
     const CurrentQuestion = questions[questionIndex];
 
