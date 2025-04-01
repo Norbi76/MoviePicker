@@ -55,6 +55,12 @@ function App() {
     setShowQuestions(true);
   };
 
+  useEffect(() => {
+    setShowRecommendations(true);
+  }
+    , [showWelcome]);
+  // remove this after tested the recommendation component
+
   return (
     <div className="App">
       <Header>
@@ -73,13 +79,13 @@ function App() {
         </div>
       </Header >
       <div className="content">
-        {showWelcome ? <WelcomeComponent onStartClick={handleStartClick} /> : null}
+        {/* {showWelcome ? <WelcomeComponent onStartClick={handleStartClick} /> : null}
         {showAbout ? <AboutComponent /> : null}
         {showQuestions ? (
           <QuestionsComponent onReachedEnd={() => { setShowQuestions(false); setShowRecommendations(true) }} />
-        ) : null}
-        {showRecommendations ? <RecommendationComponent /> : null}
-        {/* <RecommendationComponent /> */}
+        ) : null} */}
+        {/* {showRecommendations ? <RecommendationComponent /> : null} */}
+        {showRecommendations ? (<RecommendationComponent onReachedEnd={() => { setShowRecommendations(false); setShowWelcome(true) }} />) : null}
       </div>
 
     </div >

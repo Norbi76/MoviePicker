@@ -300,7 +300,7 @@ function QuestionsComponent({ onReachedEnd }) {
     const [questionIndex, setQuestionIndex] = useState(0);
     const [answers, setAnswers] = useState({});
     const [showComponent, setShowComponent] = useState(true);
-    const [delay] = useState(2000);
+    const [delay] = useState(1000);
     // const [reachedEnd, setReachedEnd] = useState(false);
     const questions = [Genre, Year, Time, Popularity, Rating];
 
