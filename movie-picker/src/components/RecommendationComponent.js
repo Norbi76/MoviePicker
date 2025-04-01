@@ -18,7 +18,10 @@ function RecommendationComponent({ onReachedEnd }) {
     // useEffect(() => {
     //     console.log("Exported Answers:", exportedAnswers);
     // }, []);
+
     const [backToHome, setBackToHome] = useState(false);
+
+
 
     useEffect(() => {
 

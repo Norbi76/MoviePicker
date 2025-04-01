@@ -16,11 +16,20 @@ const blinkAnimation = `
 `;
 
 function Genre({ onNext }) {
-    const [selected, setSelected] = useState(null);
+    // const [selected, setSelected] = useState(null);
     const [disabled, setDisabled] = useState(false);
+    const [active, setActive] = useState(null);
 
-    const handleClick = (value) => {
-        setSelected(value);
+    const dramaticGenres = ["Action", "Adventure", "Drama"];
+    const gentleGenres = ["Comedy", "Family", "Romance"];
+    const curiousGenres = ["History", "Mystery"];
+    const outOfThisWorldGenres = ["Fantasy", "Science-fiction"];
+    const realisticGenres = ["Documentary"];
+    const allGenres = [];
+
+    const handleClick = (value, buttonId) => {
+        setActive(buttonId);
+        // setSelected(value);
         setDisabled(true);
         onNext({ genre: value });
     };
@@ -31,40 +40,40 @@ function Genre({ onNext }) {
             <h2 style={{ margin: 0 }}>What genre would you like to watch?</h2>
             <Button
                 style={{ width: "70%" }}
-                onClick={() => handleClick("Dramatic")}
-                className={selected === "Dramatic" ? "blinking" : ""}
+                onClick={() => handleClick(dramaticGenres, "Dramatic")}
+                className={active === "Dramatic" ? "blinking" : ""}
                 disabled={disabled}
             >
                 Dramatic (Action, Adventure, Drama)
             </Button>
             <Button
                 style={{ width: "70%" }}
-                onClick={() => handleClick("Gentle")}
-                className={selected === "Gentle" ? "blinking" : ""}
+                onClick={() => handleClick(gentleGenres, "Gentle")}
+                className={active === "Gentle" ? "blinking" : ""}
                 disabled={disabled}
             >
                 Gentle (Comedy, Family, Romance)
             </Button>
             <Button
                 style={{ width: "70%" }}
-                onClick={() => handleClick("Curious")}
-                className={selected === "Curious" ? "blinking" : ""}
+                onClick={() => handleClick(curiousGenres, "Curious")}
+                className={active === "Curious" ? "blinking" : ""}
                 disabled={disabled}
             >
                 Curious (History, Mystery)
             </Button>
             <Button
                 style={{ width: "70%" }}
-                onClick={() => handleClick("Out of this world")}
-                className={selected === "Out of this world" ? "blinking" : ""}
+                onClick={() => handleClick(outOfThisWorldGenres, "Out of this world")}
+                className={active === "Out of this world" ? "blinking" : ""}
                 disabled={disabled}
             >
                 Out of this world (Fantasy, Science-finction)
             </Button>
             <Button
                 style={{ width: "70%" }}
-                onClick={() => handleClick("Realistic")}
-                className={selected === "Realistic" ? "blinking" : ""}
+                onClick={() => handleClick(realisticGenres, "Realistic")}
+                className={active === "Realistic" ? "blinking" : ""}
                 disabled={disabled}
             >
                 Realistic (Documentary)
@@ -72,8 +81,8 @@ function Genre({ onNext }) {
             <Button
                 style={{ width: "70%" }}
                 id="special-button"
-                onClick={() => handleClick("I don't care")}
-                className={selected === "I don't care" ? "blinking" : ""}
+                onClick={() => handleClick(allGenres, "I don't care")}
+                className={active === "I don't care" ? "blinking" : ""}
                 disabled={disabled}
             >
                 I don't care
@@ -85,61 +94,70 @@ function Genre({ onNext }) {
 function Year({ onNext }) {
     const [selected, setSelected] = useState(null);
     const [disabled, setDisabled] = useState(false);
+    const [active, setActive] = useState(null);
 
-    const handleClick = (value) => {
+    const handleClick = (value, buttonId) => {
+        setActive(buttonId);
         setSelected(value);
         setDisabled(true);
         onNext({ year: value });
     };
 
+    const thisYear = 2024;
+    const last5Years = thisYear - 5;
+    const last10Years = thisYear - 10;
+    const last20Years = thisYear - 20;
+    const last50Years = thisYear - 50;
+    const last100Years = thisYear - 100;
+
     return (
         <>
-            <style>{[blinkAnimation]}</style>
+            <style>{blinkAnimation}</style>
             <h2 style={{ margin: 0 }}>What year...?</h2>
             <Button
                 style={{ width: "70%" }}
-                onClick={() => handleClick("This year")}
-                className={selected === "This year" ? "blinking" : ""}
+                onClick={() => handleClick(thisYear, "This year")}
+                className={active === "This year" ? "blinking" : ""}
                 disabled={disabled}
             >
                 This year
             </Button>
             <Button
                 style={{ width: "70%" }}
-                onClick={() => handleClick("Last 5 years")}
-                className={selected === "Last 5 years" ? "blinking" : ""}
+                onClick={() => handleClick(last5Years, "Last 5 years")}
+                className={active === "Last 5 years" ? "blinking" : ""}
                 disabled={disabled}
             >
                 Last 5 years
             </Button>
             <Button
                 style={{ width: "70%" }}
-                onClick={() => handleClick("Last 10 years")}
-                className={selected === "Last 10 years" ? "blinking" : ""}
+                onClick={() => handleClick(last10Years, "Last 10 years")}
+                className={active === "Last 10 years" ? "blinking" : ""}
                 disabled={disabled}
             >
                 Last 10 years
             </Button>
             <Button
                 style={{ width: "70%" }}
-                onClick={() => handleClick("Last 20 years")}
-                className={selected === "Last 20 years" ? "blinking" : ""}
+                onClick={() => handleClick(last20Years, "Last 20 years")}
+                className={active === "Last 20 years" ? "blinking" : ""}
                 disabled={disabled}
             >
                 Last 20 years
             </Button>
             <Button
                 style={{ width: "70%" }}
-                onClick={() => handleClick("Last 50 years")}
-                className={selected === "Last 50 years" ? "blinking" : ""}
+                onClick={() => handleClick(last50Years, "Last 50 years")}
+                className={active === "Last 50 years" ? "blinking" : ""}
                 disabled={disabled}
             >
                 Last 50 years
             </Button>
             <Button
                 style={{ width: "70%" }}
-                onClick={() => handleClick("Last 100 years")}
-                className={selected === "Last 100 years" ? "blinking" : ""}
+                onClick={() => handleClick(last100Years, "Last 100 years")}
+                className={active === "Last 100 years" ? "blinking" : ""}
                 disabled={disabled}
             >
                 Last 100 years
@@ -147,8 +165,8 @@ function Year({ onNext }) {
             <Button
                 style={{ width: "70%" }}
                 id="special-button"
-                onClick={() => handleClick("I reaaaally don't care")}
-                className={selected === "I reaaaally don't care" ? "blinking" : ""}
+                onClick={() => handleClick(last100Years, "I reaaaally don't care")}
+                className={active === "I reaaaally don't care" ? "blinking" : ""}
                 disabled={disabled}
             >
                 I reaaaally don't care
@@ -160,12 +178,19 @@ function Year({ onNext }) {
 function Time({ onNext }) {
     const [selected, setSelected] = useState(null);
     const [disabled, setDisabled] = useState(false);
+    const [active, setActive] = useState(null);
 
-    const handleClick = (value) => {
+    const handleClick = (value, buttonId) => {
+        setActive(buttonId);
         setSelected(value);
         setDisabled(true);
         onNext({ time: value });
     };
+
+    const shortFilm = [0, 90];
+    const averageFilm = [90, 150];
+    const longFilm = [150, 0];
+    const allLenghts = [0, 0];
 
     return (
         <>
@@ -173,24 +198,24 @@ function Time({ onNext }) {
             <h2 style={{ margin: 0 }}>For how long...?</h2>
             <Button
                 style={{ width: "70%" }}
-                onClick={() => handleClick("A shorter film")}
-                className={selected === "A shorter film" ? "blinking" : ""}
+                onClick={() => handleClick(shortFilm, "A shorter film")}
+                className={active === "A shorter film" ? "blinking" : ""}
                 disabled={disabled}
             >
                 A shorter film (~90 minutes)
             </Button>
             <Button
                 style={{ width: "70%" }}
-                onClick={() => handleClick("Average length")}
-                className={selected === "Average length" ? "blinking" : ""}
+                onClick={() => handleClick(averageFilm, "Average length")}
+                className={active === "Average length" ? "blinking" : ""}
                 disabled={disabled}
             >
                 Average length (1.5 to 2.5 hours)
             </Button>
             <Button
                 style={{ width: "70%" }}
-                onClick={() => handleClick("A long film")}
-                className={selected === "A long film" ? "blinking" : ""}
+                onClick={() => handleClick(longFilm, "A long film")}
+                className={active === "A long film" ? "blinking" : ""}
                 disabled={disabled}
             >
                 A long film (2.5 hours)
@@ -198,8 +223,8 @@ function Time({ onNext }) {
             <Button
                 style={{ width: "70%" }}
                 id="special-button"
-                onClick={() => handleClick("Time is relative")}
-                className={selected === "Time is relative" ? "blinking" : ""}
+                onClick={() => handleClick("allLenghts", "Time is relative")}
+                className={active === "Time is relative" ? "blinking" : ""}
                 disabled={disabled}
             >
                 Time is relative
@@ -211,12 +236,18 @@ function Time({ onNext }) {
 function Popularity({ onNext }) {
     const [selected, setSelected] = useState(null);
     const [disabled, setDisabled] = useState(false);
+    const [active, setActive] = useState(null);
 
-    const handleClick = (value) => {
+    const handleClick = (value, buttonId) => {
+        setActive(buttonId);
         setSelected(value);
         setDisabled(true);
         onNext({ popularity: value });
     };
+
+    const highPopularity = 7;
+    const averagePopularity = 5;
+    const allGrades = 0;
 
     return (
         <>
@@ -224,25 +255,25 @@ function Popularity({ onNext }) {
             <h2 style={{ margin: 0 }}>How popular?</h2>
             <Button
                 style={{ width: "70%" }}
-                onClick={() => handleClick("Everybody heard of it")}
-                className={selected === "Everybody heard of it" ? "blinking" : ""}
+                onClick={() => handleClick(highPopularity, "Everybody heard of it")}
+                className={active === "Everybody heard of it" ? "blinking" : ""}
                 disabled={disabled}
             >
-                Everybody heard of it
+                Everybody heard of it (7/10)
             </Button>
             <Button
                 style={{ width: "70%" }}
-                onClick={() => handleClick("Nobody heard of it")}
-                className={selected === "Nobody heard of it" ? "blinking" : ""}
+                onClick={() => handleClick(averagePopularity, "Average")}
+                className={active === "Average" ? "blinking" : ""}
                 disabled={disabled}
             >
-                Nobody heard of it
+                Nobody heard of it (5/10)
             </Button>
             <Button
                 style={{ width: "70%" }}
                 id="special-button"
-                onClick={() => handleClick("Doesn't matter...")}
-                className={selected === "Doesn't matter..." ? "blinking" : ""}
+                onClick={() => handleClick(allGrades, "Doesn't matter...")}
+                className={active === "Doesn't matter..." ? "blinking" : ""}
                 disabled={disabled}
             >
                 Doesn't matter...
@@ -254,12 +285,18 @@ function Popularity({ onNext }) {
 function Rating({ onNext }) {
     const [selected, setSelected] = useState(null);
     const [disabled, setDisabled] = useState(false);
+    const [active, setActive] = useState(null);
 
-    const handleClick = (value) => {
+    const handleClick = (value, buttonId) => {
+        setActive(buttonId);
         setSelected(value);
         setDisabled(true);
         onNext({ rating: value });
     };
+
+    const highRating = 7;
+    const averageRating = 5;
+    const allRatings = 0;
 
     return (
         <>
@@ -267,16 +304,16 @@ function Rating({ onNext }) {
             <h2 style={{ margin: 0 }}>What about rating?</h2>
             <Button
                 style={{ width: "70%" }}
-                onClick={() => handleClick("Higly rated")}
-                className={selected === "Higly rated" ? "blinking" : ""}
+                onClick={() => handleClick(highRating, "Higly rated")}
+                className={active === "Higly rated" ? "blinking" : ""}
                 disabled={disabled}
             >
                 Higly rated(Over 7/10 rated)
             </Button>
             <Button
                 style={{ width: "70%" }}
-                onClick={() => handleClick("At least average")}
-                className={selected === "At least average" ? "blinking" : ""}
+                onClick={() => handleClick(averageRating, "At least average")}
+                className={active === "At least average" ? "blinking" : ""}
                 disabled={disabled}
             >
                 At least average(Over 5/10 rated)
@@ -284,8 +321,8 @@ function Rating({ onNext }) {
             <Button
                 style={{ width: "70%" }}
                 id="special-button"
-                onClick={() => handleClick("I don't mind")}
-                className={selected === "I don't mind" ? "blinking" : ""}
+                onClick={() => handleClick(allRatings, "I don't mind")}
+                className={active === "I don't mind" ? "blinking" : ""}
                 disabled={disabled}
             >
                 I don't mind
@@ -294,14 +331,11 @@ function Rating({ onNext }) {
     );
 }
 
-// export const QuestionContext = createContext();
-
 function QuestionsComponent({ onReachedEnd }) {
     const [questionIndex, setQuestionIndex] = useState(0);
     const [answers, setAnswers] = useState({});
     const [showComponent, setShowComponent] = useState(true);
     const [delay] = useState(1000);
-    // const [reachedEnd, setReachedEnd] = useState(false);
     const questions = [Genre, Year, Time, Popularity, Rating];
 
     const handleNext = (newAnswer) => {
@@ -319,7 +353,6 @@ function QuestionsComponent({ onReachedEnd }) {
 
     useEffect(() => {
         if (questionIndex === questions.length) {
-            // setReachedEnd(true);
             console.log("All questions answered:", answers);
             alert(JSON.stringify(answers));
             if (onReachedEnd) {
