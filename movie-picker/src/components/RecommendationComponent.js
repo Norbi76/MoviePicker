@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Container from "./Container";
 import { exportedAnswers } from "./QuestionsComponent";
-//exported answers contains the input from the user
+//exportedAnswers contains the input from the user
 import Button from "./Button";
 
 const special_button = `
