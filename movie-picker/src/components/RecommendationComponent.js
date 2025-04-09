@@ -83,6 +83,7 @@ function RecommendationComponent({ onReachedEnd }) {
                     <p style={{ margin: "0" }}><strong>Rating: </strong>{recommendations ? `${recommendations[currentRecommandtionIndex]["vote_average"]}` : null}/10</p>
                     <p style={{ margin: "0" }}><strong>Popularity: </strong>{recommendations ? `${recommendations[currentRecommandtionIndex]["popularity"]}` : null}</p>
                     <p style={{ margin: "0" }}><strong>Language: </strong>{recommendations ? `${recommendations[currentRecommandtionIndex]["original_language"]}` : null}</p>
+                    <p style={{ margin: "0" }}><strong>Genres: </strong>{recommendations ? `${recommendations[currentRecommandtionIndex]["genres"].map(genre => genre.name).join(", ")}` : null}</p>
                 </div>
             </div>
             <div style={{display:"flex", flexDirection:"row", gap:"10px"}}>
