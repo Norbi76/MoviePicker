@@ -103,7 +103,7 @@ function Year({ onNext }) {
         onNext({ year: value });
     };
 
-    const thisYear = 2024;
+    const thisYear = new Date().getFullYear();
     const last5Years = thisYear - 5;
     const last10Years = thisYear - 10;
     const last20Years = thisYear - 20;
