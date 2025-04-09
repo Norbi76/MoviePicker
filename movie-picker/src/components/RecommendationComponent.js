@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Container from "./Container";
 import { exportedAnswers } from "./QuestionsComponent";
-//exportedAnswers contains the input from the user
 import Button from "./Button";
 
 const special_button = `
@@ -15,90 +14,160 @@ const special_button = `
     }  
 `;
 
-// used for testing ui, uncomment to use
-//function fetchAndReturnJson(limit = 5) {
-//    return fetch('/movies.json') // Fetch from the public directory
-//        .then(response => {
-//            if (!response.ok) {
-//                throw new Error(`HTTP error! status: ${response.status}`);
-//            }
-//            return response.json();
-//        })
-//        .then(data => {
-//            if (typeof data === "object" && !Array.isArray(data)) {
-//                const entries = Object.entries(data); // Convert the dictionary to an array of key-value pairs
-//                const limitedEntries = entries.slice(0, limit); // Get the first N key-value pairs
-//                const limitedData = Object.fromEntries(limitedEntries); // Convert back to an object
-//                console.log(`First ${limit} key-value pairs:`, limitedData);
-//                return limitedData; // Return the limited data
-//            } else {
-//                console.warn("JSON data is not a dictionary. Full data:", data);
-//                return null;
-//            }
-//        })
-//        .catch(error => {
-//            console.error("Error fetching JSON:", error);
-//            return null;
-//        });
-//}
-
 function RecommendationComponent({ onReachedEnd }) {
     const [backToHome, setBackToHome] = useState(false);
-    const [recommendations, setRecommendationsData] = useState(null);
+    const [recommendations, setRecommendationsData] = useState([]);
     const [currentRecommandtionIndex, setCurrentRecommandtionIndex] = useState(0);
     const posterPath = "https://image.tmdb.org/t/p/w200/";
 
     useEffect(() => {
-
         if (onReachedEnd && backToHome) {
             onReachedEnd();
         }
     }, [backToHome, onReachedEnd]);
 
-    //used for testing ui, uncomment to use
-    //useEffect(() => {
-    //    fetchAndReturnJson().then(data => {
-    //        if (data) {
-    //            setRecommendationsData(data);
-    //        }
-    //    });
-    //}, []);
+    useEffect(() => {
+        fetch("/movies.json")
+            .then(res => res.json())
+            .then(data => {
+                const allMovies = Object.values(data);
+                const topRecommendations = generateRecommendations(allMovies);
+                setRecommendationsData(topRecommendations);
+                console.log(recommendations)
+            })
+            .catch(err => console.error("Failed to fetch movies:", err));
+    }, []);
 
-    /*
-        Add here code for inference
-    */ 
+    // ----------------- Inference Logic ------------------
+
+    const matchGenres = (movie, selectedGenres) => {
+        if (!selectedGenres || selectedGenres.length === 0) return true;
+        if (!movie.genres || movie.genres.length === 0) return false;
+        const movieGenres = movie.genres.map(g => g.name.toLowerCase());
+        return selectedGenres.some(genre =>
+            movieGenres.includes(genre.toLowerCase())
+        );
+    };
+
+    const matchYear = (movie, yearCriteria) => {
+        if (!yearCriteria) return true;
+        if (!movie.release_date) return false;
+        const movieYear = new Date(movie.release_date).getFullYear();
+        if (Array.isArray(yearCriteria)) {
+            const [minYear, maxYear] = yearCriteria;
+            return (!minYear || movieYear >= minYear) &&
+                   (!maxYear || movieYear <= maxYear);
+        }
+        return movieYear >= yearCriteria;
+    };
+
+    const matchRuntime = (movie, runtimeCriteria) => {
+        if (!runtimeCriteria) return true;
+        if (!movie.runtime) return false;
+        const [minTime, maxTime] = runtimeCriteria;
+        return (!minTime || movie.runtime >= minTime) &&
+               (!maxTime || movie.runtime <= maxTime);
+    };
+
+    const matchRating = (movie, minRating) => {
+        if (!minRating) return true;
+        if (!movie.vote_average) return false;
+        return movie.vote_average >= minRating;
+    };
+
+    const matchPopularity = (movie, minPopularity) => {
+        if (!minPopularity) return true;
+        if (!movie.popularity) return false;
+        return movie.popularity >= minPopularity;
+    };
+
+    const generateRecommendations = (allMovies) => {
+        try {
+            const selectedGenres = Array.isArray(exportedAnswers.genre)
+                ? exportedAnswers.genre
+                : exportedAnswers.genre ? [exportedAnswers.genre] : [];
+
+            let filteredMovies = allMovies;
+
+            filteredMovies = filteredMovies.filter(movie =>
+                matchGenres(movie, selectedGenres)
+            );
+
+            if (filteredMovies.length > 0) {
+                filteredMovies = filteredMovies.filter(movie =>
+                    matchYear(movie, exportedAnswers.year)
+                );
+            }
+
+            if (filteredMovies.length > 0) {
+                filteredMovies = filteredMovies.filter(movie =>
+                    matchRuntime(movie, exportedAnswers.time)
+                );
+            }
+
+            if (filteredMovies.length > 0) {
+                filteredMovies = filteredMovies.filter(movie =>
+                    matchRating(movie, exportedAnswers.rating)
+                );
+            }
+
+            if (filteredMovies.length > 0) {
+                filteredMovies = filteredMovies.filter(movie =>
+                    matchPopularity(movie, exportedAnswers.popularity)
+                );
+            }
+
+            const sortedMovies = filteredMovies.sort((a, b) => {
+                const scoreA = (a.vote_average || 0) + (a.popularity || 0) / 10;
+                const scoreB = (b.vote_average || 0) + (b.popularity || 0) / 10;
+                return scoreB - scoreA;
+            });
+
+            return sortedMovies.slice(0, 10);
+        } catch (error) {
+            console.error("Recommendation error:", error);
+            return [];
+        }
+    };
+
+    // -----------------------------------------------------
+
+    const currentMovie = recommendations[currentRecommandtionIndex];
 
     return (
-        < Container >
+        <Container>
             <style>{special_button}</style>
-            <div style={{ display: "flex", flexDirection: "row" }}>
-                <div className="movie_poster">
-                    <img src={recommendations ? `${posterPath}${recommendations[currentRecommandtionIndex]["poster_path"]}` : null} alt="poster" />
+            {currentMovie && (
+                <div style={{ display: "flex", flexDirection: "row" }}>
+                    <div className="movie_poster">
+                        <img src={`${posterPath}${currentMovie.poster_path}`} alt="poster" />
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center", flexDirection: "column", height: "100%", paddingRight: "50px", paddingLeft: "50px" }}>
+                        <h2 style={{ margin: "0", marginBottom: "15px" }}>{currentMovie.title}</h2>
+                        <p style={{ margin: "0", marginBottom: "15px", fontSize: "12px" }}><strong>Movie description: </strong>{currentMovie.overview}</p>
+                        <p><strong>Release date: </strong>{currentMovie.release_date}</p>
+                        <p><strong>Runtime: </strong>{currentMovie.runtime} min</p>
+                        <p><strong>Rating: </strong>{currentMovie.vote_average}/10</p>
+                        <p><strong>Popularity: </strong>{currentMovie.popularity}</p>
+                        <p><strong>Language: </strong>{currentMovie.original_language}</p>
+                        <p><strong>Genres: </strong>{currentMovie.genres.map(g => g.name).join(", ")}</p>
+                    </div>
                 </div>
-                <div style={{ display: "flex", alignItems: "center", flexDirection: "column", height: "100%", paddingRight: "50px", paddingLeft: "50px" }}>
-                    <h2 style={{margin:"0", marginBottom:"15px"}}>{recommendations ? `${recommendations[currentRecommandtionIndex]["title"]}` : null}</h2>
-                    <p style={{ margin: "0", marginBottom: "15px", fontSize:"12px"}}><strong>Movie description: </strong>{recommendations ? `${recommendations[currentRecommandtionIndex]["overview"]}` : null}</p>
-                    <p style={{ margin: "0" }}><strong>Release date: </strong>{recommendations ? `${recommendations[currentRecommandtionIndex]["release_date"]}` : null}</p>
-                    <p style={{ margin: "0" }}><strong>Runtime: </strong>{recommendations ? `${recommendations[currentRecommandtionIndex]["runtime"]}` : null} min</p>
-                    <p style={{ margin: "0" }}><strong>Rating: </strong>{recommendations ? `${recommendations[currentRecommandtionIndex]["vote_average"]}` : null}/10</p>
-                    <p style={{ margin: "0" }}><strong>Popularity: </strong>{recommendations ? `${recommendations[currentRecommandtionIndex]["popularity"]}` : null}</p>
-                    <p style={{ margin: "0" }}><strong>Language: </strong>{recommendations ? `${recommendations[currentRecommandtionIndex]["original_language"]}` : null}</p>
-                    <p style={{ margin: "0" }}><strong>Genres: </strong>{recommendations ? `${recommendations[currentRecommandtionIndex]["genres"].map(genre => genre.name).join(", ")}` : null}</p>
-                </div>
-            </div>
-            <div style={{display:"flex", flexDirection:"row", gap:"10px"}}>
+            )}
+            <div style={{ display: "flex", flexDirection: "row", gap: "10px" }}>
                 <Button onClick={() => {
-                    setCurrentRecommandtionIndex(prevIndex => {
-                        const numberOfEntries = recommendations ? Object.keys(recommendations).length : 0;
-                        return (prevIndex + 1) % numberOfEntries; // Reset to 0 if it reaches the end
-                    });
-                }}
-                >Try again</Button>
-                <Button onClick={() => setBackToHome(true)} id="special-button">Restart(Go back to Home)</Button>
+                    setCurrentRecommandtionIndex(prevIndex =>
+                        (prevIndex + 1) % recommendations.length
+                    );
+                }}>
+                    Try again
+                </Button>
+                <Button onClick={() => setBackToHome(true)} id="special-button">
+                    Restart (Go back to Home)
+                </Button>
             </div>
-        </Container >
+        </Container>
     );
 }
-
 
 export default RecommendationComponent;
