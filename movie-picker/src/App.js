@@ -4,7 +4,6 @@ import Button from './components/Button';
 import Header from './components/Header';
 import WelcomeComponent from './components/WelcomeComponent';
 import AboutComponent from './components/AboutComponent';
-// import { fetchData } from './apiService';
 import QuestionsComponent from './components/QuestionsComponent';
 import RecommendationComponent from './components/RecommendationComponent';
 
@@ -55,10 +54,10 @@ function App() {
     setShowQuestions(true);
   };
 
-  // useEffect(() => {
-  //   setShowRecommendations(true);
-  // }
-  //   , [showWelcome]);
+  //useEffect(() => {
+  //  setShowRecommendations(true);
+  //}
+  //  , [showWelcome]);
   // remove this after tested the recommendation component
 
   return (
@@ -79,13 +78,13 @@ function App() {
         </div>
       </Header >
       <div className="content">
-        {showWelcome ? <WelcomeComponent onStartClick={handleStartClick} /> : null}
+         {showWelcome ? <WelcomeComponent onStartClick={handleStartClick} /> : null}
         {showAbout ? <AboutComponent /> : null}
         {showQuestions ? (
           <QuestionsComponent onReachedEnd={() => { setShowQuestions(false); setShowRecommendations(true) }} />
         ) : null}
-        {/* {showRecommendations ? <RecommendationComponent /> : null} */}
-        {showRecommendations ? (<RecommendationComponent onReachedEnd={() => { setShowRecommendations(false); setShowWelcome(true) }} />) : null}
+        {showRecommendations ? (<RecommendationComponent onReachedEnd={() => { setShowRecommendations(false); setShowWelcome(true) }} />) : null} 
+        {/*{showRecommendations ? <RecommendationComponent /> : null}*/}
       </div>
 
     </div >

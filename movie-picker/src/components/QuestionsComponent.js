@@ -109,6 +109,7 @@ function Year({ onNext }) {
     const last20Years = thisYear - 20;
     const last50Years = thisYear - 50;
     const last100Years = thisYear - 100;
+    const allYears = [];
 
     return (
         <>
@@ -156,16 +157,8 @@ function Year({ onNext }) {
             </Button>
             <Button
                 style={{ width: "70%" }}
-                onClick={() => handleClick(last100Years, "Last 100 years")}
-                className={active === "Last 100 years" ? "blinking" : ""}
-                disabled={disabled}
-            >
-                Last 100 years
-            </Button>
-            <Button
-                style={{ width: "70%" }}
                 id="special-button"
-                onClick={() => handleClick(last100Years, "I reaaaally don't care")}
+                onClick={() => handleClick(allYears, "I reaaaally don't care")}
                 className={active === "I reaaaally don't care" ? "blinking" : ""}
                 disabled={disabled}
             >
@@ -190,7 +183,7 @@ function Time({ onNext }) {
     const shortFilm = [0, 90];
     const averageFilm = [90, 150];
     const longFilm = [150, 0];
-    const allLenghts = [0, 0];
+    const allLenghts = [];
 
     return (
         <>
@@ -223,7 +216,7 @@ function Time({ onNext }) {
             <Button
                 style={{ width: "70%" }}
                 id="special-button"
-                onClick={() => handleClick("allLenghts", "Time is relative")}
+                onClick={() => handleClick(allLenghts, "Time is relative")}
                 className={active === "Time is relative" ? "blinking" : ""}
                 disabled={disabled}
             >
@@ -245,9 +238,9 @@ function Popularity({ onNext }) {
         onNext({ popularity: value });
     };
 
-    const highPopularity = 7;
-    const averagePopularity = 5;
-    const allGrades = 0;
+    const highPopularity = "high_popularity";
+    const averagePopularity = "average_popularity";
+    const allGrades = [];
 
     return (
         <>
@@ -259,7 +252,7 @@ function Popularity({ onNext }) {
                 className={active === "Everybody heard of it" ? "blinking" : ""}
                 disabled={disabled}
             >
-                Everybody heard of it (7/10)
+                Everybody heard of it
             </Button>
             <Button
                 style={{ width: "70%" }}
@@ -267,7 +260,7 @@ function Popularity({ onNext }) {
                 className={active === "Average" ? "blinking" : ""}
                 disabled={disabled}
             >
-                Nobody heard of it (5/10)
+                Nobody heard of it
             </Button>
             <Button
                 style={{ width: "70%" }}
@@ -296,7 +289,7 @@ function Rating({ onNext }) {
 
     const highRating = 7;
     const averageRating = 5;
-    const allRatings = 0;
+    const allRatings = [];
 
     return (
         <>
