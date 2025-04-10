@@ -75,10 +75,15 @@ function RecommendationComponent({ onReachedEnd }) {
         return movie.vote_average >= minRating;
     };
 
-    const matchPopularity = (movie, minPopularity) => {
+    const matchPopularity = (movie, minPopularity, avgPopularity) => {
         if (!minPopularity) return true;
         if (!movie.popularity) return false;
-        return movie.popularity >= minPopularity;
+
+        if (minPopularity == "high_popularity") {
+            return movie.popularity >= avgPopularity
+        }
+
+        return movie.popularity < avgPopularity;
     };
 
     const generateRecommendations = (allMovies) => {
@@ -86,6 +91,11 @@ function RecommendationComponent({ onReachedEnd }) {
             const selectedGenres = Array.isArray(exportedAnswers.genre)
                 ? exportedAnswers.genre
                 : exportedAnswers.genre ? [exportedAnswers.genre] : [];
+
+            const totalPopularity = allMovies.reduce((sum, movie) => {
+                return sum + (movie.popularity || 0);
+            }, 0);
+            const averagePopularity = totalPopularity / allMovies.length;
 
             let filteredMovies = allMovies;
 
@@ -113,7 +123,7 @@ function RecommendationComponent({ onReachedEnd }) {
 
             if (filteredMovies.length > 0) {
                 filteredMovies = filteredMovies.filter(movie =>
-                    matchPopularity(movie, exportedAnswers.popularity)
+                    matchPopularity(movie, exportedAnswers.popularity, averagePopularity)
                 );
             }
 
